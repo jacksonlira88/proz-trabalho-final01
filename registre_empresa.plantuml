@@ -1,0 +1,52 @@
+@startuml
+
+class Empresa{
+    -int id
+    String nomeSocial
+    String nomeFantasia
+    String cnpj
+    Endereco endereco
+    Data dataCadastro 
+    Socio socio 
+}
+
+abstract Socio{
+    int id
+    Endereco endereco
+   
+}
+
+Empresa o--"1" Socio : contém
+
+
+class Endereco {
+    int id
+    String estado
+    String municipio
+    String bairro
+    String logradouro
+    int numero
+    String complemento
+    String CEP
+}
+Empresa o-- Endereco : contém
+Socio o-- Endereco: contém
+
+class PessoaFisica extends Socio{
+    String nome
+    String cpf
+    void validarCPF()
+}
+
+class PessoaJuridica extends Socio{
+    String nomeSocial
+    String nomeFantasia
+    String cnpj
+    void validarCNPJ()
+
+}
+
+
+
+
+@enduml
