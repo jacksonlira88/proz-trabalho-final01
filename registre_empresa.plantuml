@@ -7,7 +7,10 @@ class Empresa{
     String cnpj
     Endereco endereco
     Data dataCadastro 
-    Socio socio 
+    String socioPF
+    String socioPJ 
+
+   
 }
 
 abstract Socio{
@@ -35,18 +38,40 @@ Socio o-- Endereco: contém
 class PessoaFisica extends Socio{
     String nome
     String cpf
-    void validarCPF()
+   
 }
 
 class PessoaJuridica extends Socio{
     String nomeSocial
     String nomeFantasia
     String cnpj
-    void validarCNPJ()
+    
+}
+
+class Validador{
+    bool validarCNPJ()
+    bool validarCPF()
+}
+
+class APIProviderEmpresas{
+    +List<Empresa> _empresasCadastradas
+
+    bool cadastrarEmpresa(Empresa empresa)
+    bool removerEmpresa(String id)
+    +List<Empresa> listaEmpresas()
+
+
 
 }
 
+class RepositoryEmpresas{
+    +APIProviderEmpresas _apiProvider
 
+    +bool cadastrarEmpresa(Empresa empresa)
+    +bool removerEmpresa(String id)
+    +List<Empresa> listaEmpresas()
+}
 
+RepositoryEmpresas  o--"1" APIProviderEmpresas : contém
 
 @enduml
