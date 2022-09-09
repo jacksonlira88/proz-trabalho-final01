@@ -1,0 +1,41 @@
+String nomeSocialEmpresa = " JL Soluções";
+  String nomeFantasiaEmpresa = 'JL';
+  String cnpjEmpresa = "1323211641614655"; // precisa validar
+
+  print('Endereço da empresa:');
+  String estadoEmpresa = "RN";
+  String municipioEmpresa = "Doutor Severiano";
+  String bairroEmpresa = "centro";
+  String logradouroEmpresa = "Ana nogueira";
+  String numeroEmpresa = "10";
+  String commplementoEmpresa = "casa";
+
+  Endereco enderecoEmpresa = Endereco(
+      estadoEmpresa, municipioEmpresa, bairroEmpresa, logradouroEmpresa,
+      numero: numeroEmpresa, complemento: commplementoEmpresa);
+
+  print(
+      "Cadastrar Sócio da empresa Pessoa Física"); // se 1 pessoa física se 2 pessoa juridica
+  String nomeSocio = "Jarquison Lira";
+  String cpfSocio = "09590926410";
+
+  print("Endereço do Socio Pessoa Física");
+  String estadoSocio = "Paraiba";
+  String municipioSocio = " Sousa";
+  String bairroSocio = "Centro";
+  String logradouroSocio = "Ana Tereza";
+  String numeroSocio = "22";
+  String commplementoSocio = "Aparatemento 4";
+
+  Endereco enderecoSocio = Endereco(
+      estadoSocio, municipioSocio, bairroSocio, logradouroSocio,
+      numero: numeroSocio, complemento: commplementoSocio);
+
+  PessoaFisica socio = PessoaFisica(nomeSocio, enderecoSocio);
+  socio.validarCPF(cpfSocio); // só avança de o CNPJ estiver validados
+  empresas.cadastrarSocioPF(socio);
+
+  Empresa empresa = Empresa(
+      nomeSocialEmpresa, nomeFantasiaEmpresa, enderecoEmpresa,
+      socioIdPF: socio.id);
+  empresa.validarCNPJ(cnpjEmpresa);
