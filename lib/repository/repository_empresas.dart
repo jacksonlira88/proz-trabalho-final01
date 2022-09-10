@@ -41,8 +41,8 @@ class RepositoryEmpresas {
   }
 
 // não concluido
-  String getEmpresaCNPJ(String cnpj) {
-    return 'Empresa';
+  Empresa? getEmpresaCNPJ(String cnpj) {
+    return _apiProvider.getEmpresaCNPJ(cnpj);
   }
 
   Empresa? getEmpresaCNPJSocio(String cnpj) {
