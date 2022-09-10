@@ -95,4 +95,13 @@ class APIProviderEmpresas {
     }
     return false;
   }
+
+  Empresa? getEmpresaCNPJ(String cnpj) {
+    for (var empresa in _empresasCadastradas) {
+      if (empresa.cnpj == cnpj) {
+        return empresa;
+      }
+    }
+    return null;
+  }
 }
