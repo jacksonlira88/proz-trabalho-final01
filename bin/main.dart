@@ -4,6 +4,7 @@ import 'package:registre_empresa/model/empresa.dart';
 import 'package:registre_empresa/model/endereco.dart';
 import 'package:registre_empresa/model/pessoa_fisica.dart';
 import 'package:registre_empresa/model/pessoa_juridica.dart';
+import 'package:registre_empresa/model/socio.dart';
 import 'package:registre_empresa/repository/repository_empresas.dart';
 
 void main(List<String> arguments) {
@@ -12,6 +13,7 @@ void main(List<String> arguments) {
   bool verdade = true;
   do {
     int opcao = 7;
+    print('\n');
     print('SGE - Sistema de Gerenciamento de Empresas');
     print('Opções:');
     print('1. Cadastrar uma nova empresa');
@@ -32,7 +34,7 @@ void main(List<String> arguments) {
       case 3:
         break;
       case 4:
-        imprimirEmpresas(empresas.listaEmpresas(), empresas);
+        imprimirEmpresas(empresas);
         break;
       case 5:
         break;
@@ -42,80 +44,116 @@ void main(List<String> arguments) {
       default:
     }
   } while (verdade);
-
-  // só avaça se o CNPJ estiver validados
 }
 
 void cadastrarEmpresa(RepositoryEmpresas empresas) {
   print("Informações da empresa");
-  print("Razao Social:");
+  stdout.write("Razao Social: ");
   String nomeSocialEmpresa = stdin.readLineSync()!;
-  print("Nome Fantasia:");
+  stdout.write("Nome Fantasia: ");
   String nomeFantasiaEmpresa = stdin.readLineSync()!;
-  print("Telefone:");
+  stdout.write("Telefone: ");
   String telefoneEmpresa = stdin.readLineSync()!;
-  print(
+  stdout.write(
       "CNPJ(apenas número): "); //validar: quantidade de números, antes de criar empresa
   String cnpjEmpresa = stdin.readLineSync()!;
 
-  print('Endereço da $nomeFantasiaEmpresa');
-  print('Estado:');
-  String estadoEmpresa = stdin.readLineSync()!;
-  print('Cidade:');
-  String municipioEmpresa = stdin.readLineSync()!;
-  print('Bairro:');
-  String bairroEmpresa = stdin.readLineSync()!;
-  print('Logradouro:');
-  String logradouroEmpresa = stdin.readLineSync()!;
-  print('Número:');
-  String numeroEmpresa = stdin.readLineSync()!;
-  print('Complemento');
-  String commplementoEmpresa = stdin.readLineSync()!;
+  Endereco enderecoEmpresa = cadastrarEndereco();
+  Socio? socio = cadastraSocio(empresas);
 
-  Endereco enderecoEmpresa = Endereco(
-      estadoEmpresa, municipioEmpresa, bairroEmpresa, logradouroEmpresa,
-      numero: numeroEmpresa, complemento: commplementoEmpresa);
+  if (socio == null) {
+    //finalizar progra1ma
 
+  } else {
+    // se PessoaJuridica passar id para socioIdPJ, se não socioIdPF
+    if (socio.runtimeType == PessoaJuridica) {
+      Empresa empresa = Empresa(nomeSocialEmpresa, nomeFantasiaEmpresa,
+          telefoneEmpresa, enderecoEmpresa,
+          socioIdPJ: socio.id);
+      empresa.validarCNPJ(cnpjEmpresa);
+      empresas.cadastrarEmpresa(empresa);
+      print('Empresa cadastrada!\n');
+    } else {
+      Empresa empresa = Empresa(nomeSocialEmpresa, nomeFantasiaEmpresa,
+          telefoneEmpresa, enderecoEmpresa,
+          socioIdPF: socio.id);
+      empresa.validarCNPJ(cnpjEmpresa);
+      empresas.cadastrarEmpresa(empresa);
+      print('Empresa cadastrada!\n');
+    }
+  }
+}
+
+Socio? cadastraSocio(RepositoryEmpresas empresas) {
+  print('Cadastrar Sócio');
   print('Tipo de sócio:');
   print('1. Pessoal Física');
   print('2. Pessoa Jurídica');
+  stdout.write('Opção: ');
   int optionSocio = int.parse(stdin.readLineSync()!);
+
+// se 1 pessoa física se 2 pessoa juridica
   if (optionSocio == 1) {
-    // cadastrar pessoa física
-    print(
-        "Cadastrar Sócio da $nomeFantasiaEmpresa"); // se 1 pessoa física se 2 pessoa juridica
-    print("Nome completo do sócio");
+    print("Sócio Pessoa Física da ");
+    stdout.write("Nome completo do sócio: ");
     String nomeSocio = stdin.readLineSync()!;
-    print('CPF:');
+    stdout.write('CPF: ');
     String cpfSocio = stdin.readLineSync()!;
 
-    print("Endereço do Socio Pessoa Física");
-    String estadoSocio = "Paraiba";
-    String municipioSocio = " Sousa";
-    String bairroSocio = "Centro";
-    String logradouroSocio = "Ana Tereza";
-    String numeroSocio = "22";
-    String commplementoSocio = "Aparatemento 4";
+    Endereco enderecoPf = cadastrarEndereco();
 
-    Endereco enderecoSocio = Endereco(
-        estadoSocio, municipioSocio, bairroSocio, logradouroSocio,
-        numero: numeroSocio, complemento: commplementoSocio);
+    PessoaFisica sociopf = PessoaFisica(nomeSocio, enderecoPf);
+    sociopf.validarCPF(cpfSocio); // só avança se o CNPJ estiver validado
+    empresas.cadastrarSocioPF(sociopf);
 
-    PessoaFisica socio = PessoaFisica(nomeSocio, enderecoSocio);
-    socio.validarCPF(cpfSocio); // só avança de o CNPJ estiver validados
-    empresas.cadastrarSocioPF(socio);
-    Empresa empresa = Empresa(nomeSocialEmpresa, nomeFantasiaEmpresa,
-        telefoneEmpresa, enderecoEmpresa,
-        socioIdPF: socio.id);
-    empresa.validarCNPJ(cnpjEmpresa);
+    return sociopf;
+  } else if (optionSocio == 2) {
+    // cadastra pessoa jurídica
+    print("Sócio Pessoa Jurídica"); // se 1 pessoa física se 2 pessoa juridica
+    stdout.write("Razão Social: ");
+    String razaoSocialSocio = stdin.readLineSync()!;
+    stdout.write('Nome Fantasia: ');
+    String nomeFantasiaSocio = stdin.readLineSync()!;
+    stdout.write('CNPJ: ');
+    String cnpjSocio = stdin.readLineSync()!;
 
-    empresas.cadastrarEmpresa(empresa);
-  } else if (optionSocio == 2) {}
+    Endereco enderecopj = cadastrarEndereco();
+
+    PessoaJuridica socioPJ =
+        PessoaJuridica(razaoSocialSocio, nomeFantasiaSocio, enderecopj);
+    socioPJ.validarCNPJ(cnpjSocio); // só avança se o CNPJ estiver validado
+    empresas.cadastrarSocioPJ(socioPJ);
+
+    return socioPJ;
+  } else {
+    return null;
+  }
 }
 
-void imprimirEmpresas(List<Empresa> empresasList, RepositoryEmpresas empresas) {
-  if (empresasList.isNotEmpty) {
-    for (var element in empresasList) {
+Endereco cadastrarEndereco() {
+  print("Cadastrar endereço do Socio");
+  stdout.write('Estado: ');
+  String estado = stdin.readLineSync()!;
+  stdout.write('Cidade: ');
+  String municipio = stdin.readLineSync()!;
+  stdout.write('Bairro: ');
+  String bairro = stdin.readLineSync()!;
+  stdout.write('Logradouro: ');
+  String logradouro = stdin.readLineSync()!;
+  stdout.write('Número');
+  String numero = stdin.readLineSync()!;
+  stdout.write('Complemento: ');
+  String commplemento = stdin.readLineSync()!;
+
+  Endereco endereco = Endereco(estado, municipio, bairro, logradouro,
+      numero: numero, complemento: commplemento);
+  return endereco;
+}
+
+void imprimirEmpresas(RepositoryEmpresas empresas) {
+  if (empresas.listaEmpresas().isNotEmpty) {
+    for (var element in empresas.listaEmpresas()) {
+      print('\n');
       print("ID: ${element.id}");
       print("CNPJ: ${element.cnpj} Data Cadastro: ${element.dataCadastro}");
       print("Razão Social: ${element.nomeSocial}");
@@ -126,17 +164,14 @@ void imprimirEmpresas(List<Empresa> empresasList, RepositoryEmpresas empresas) {
       print("Sócio: ");
       if (element.socioIdPJ != null) {
         // buscar pj e imprimir
-        PessoaJuridica? pj = empresas.getSocioPJId(element.id)!;
-        print("CNPJ: ${pj.cnpj}");
-        print("Razão Social: ${pj.razaoSocial}");
-        print("Nome Fantasia:  ${pj.nomeFantasia}");
+        PessoaJuridica? pj = empresas.getSocioPJId(element.socioIdPJ!);
+        print("CNPJ: ${pj?.cnpj}");
+        print("Razão Social: ${pj?.razaoSocial}");
+        print("Nome Fantasia:  ${pj?.nomeFantasia}");
         print(
-            "Endereço:: ${pj.endereco.logradouro}, ${pj.endereco.numero}, ${pj.endereco.bairro}, ${pj.endereco.municipio}/${pj.endereco.estado}, ${pj.endereco.cep} ");
+            "Endereço:: ${pj?.endereco.logradouro}, ${pj?.endereco.numero}, ${pj?.endereco.bairro}, ${pj?.endereco.municipio}/${pj?.endereco.estado}, ${pj?.endereco.cep} ");
       }
-
       if (element.socioIdPF != null) {
-        // buscar PF e imprimir
-        // buscar pj e imprimir
         PessoaFisica? pf = empresas.getSocioPFId(element.socioIdPF!);
         print("CPF: ${pf?.cpf}");
         print("Nome completo: ${pf?.nome}");
@@ -144,7 +179,6 @@ void imprimirEmpresas(List<Empresa> empresasList, RepositoryEmpresas empresas) {
         print(
             "Endereço:: ${pf?.endereco.logradouro}, ${pf?.endereco.numero}, ${pf?.endereco.bairro}, ${pf?.endereco.municipio}/${pf?.endereco.estado}, ${pf?.endereco.cep} ");
       }
-      print('\n');
     }
   } else {
     print('Sem empresas cadastradas!');
