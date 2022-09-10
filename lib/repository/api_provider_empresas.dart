@@ -37,15 +37,12 @@ class APIProviderEmpresas {
   }
 
   PessoaFisica? getSocioPFId(String id) {
-    PessoaFisica? pf;
     for (var element in _sociosPF) {
       if (element.id == id) {
-        pf = element;
-      } else {
-        pf = null;
+        return element;
       }
     }
-    return pf;
+    return null;
   }
 
 // metodos para empresa
