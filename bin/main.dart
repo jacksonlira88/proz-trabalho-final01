@@ -30,6 +30,7 @@ void main(List<String> arguments) {
         cadastrarEmpresa(empresas);
         break;
       case 2:
+        buscarEmpresaPorCNPJ(empresas);
         break;
       case 3:
         break;
@@ -44,6 +45,19 @@ void main(List<String> arguments) {
       default:
     }
   } while (verdade);
+}
+
+void buscarEmpresaPorCNPJ(RepositoryEmpresas empresas) {
+  print('Buscar empresa cadastrada');
+  stdout.write('Informe o CNPJ:');
+  String cnpjInput = stdin.readLineSync()!;
+  Empresa? empresa = empresas.getEmpresaCNPJ(cnpjInput);
+  if (empresa == null) {
+    print('Empresa não cadastrada');
+  } else {
+    print('Encontrada:');
+    imprimiEmpresa(empresa, empresas);
+  }
 }
 
 void cadastrarEmpresa(RepositoryEmpresas empresas) {
@@ -153,34 +167,38 @@ Endereco cadastrarEndereco() {
 void imprimirEmpresas(RepositoryEmpresas empresas) {
   if (empresas.listaEmpresas().isNotEmpty) {
     for (var element in empresas.listaEmpresas()) {
-      print('\n');
-      print("ID: ${element.id}");
-      print("CNPJ: ${element.cnpj} Data Cadastro: ${element.dataCadastro}");
-      print("Razão Social: ${element.nomeSocial}");
-      print("Nome Fantasia: ${element.nomeFantasia}");
-      print("Telefone:: ${element.id}");
-      print(
-          "Endereço:: ${element.endereco.logradouro}, ${element.endereco.numero}, ${element.endereco.bairro}, ${element.endereco.municipio}/${element.endereco.estado}, ${element.endereco.cep} ");
-      print("Sócio: ");
-      if (element.socioIdPJ != null) {
-        // buscar pj e imprimir
-        PessoaJuridica? pj = empresas.getSocioPJId(element.socioIdPJ!);
-        print("CNPJ: ${pj?.cnpj}");
-        print("Razão Social: ${pj?.razaoSocial}");
-        print("Nome Fantasia:  ${pj?.nomeFantasia}");
-        print(
-            "Endereço:: ${pj?.endereco.logradouro}, ${pj?.endereco.numero}, ${pj?.endereco.bairro}, ${pj?.endereco.municipio}/${pj?.endereco.estado}, ${pj?.endereco.cep} ");
-      }
-      if (element.socioIdPF != null) {
-        PessoaFisica? pf = empresas.getSocioPFId(element.socioIdPF!);
-        print("CPF: ${pf?.cpf}");
-        print("Nome completo: ${pf?.nome}");
-
-        print(
-            "Endereço:: ${pf?.endereco.logradouro}, ${pf?.endereco.numero}, ${pf?.endereco.bairro}, ${pf?.endereco.municipio}/${pf?.endereco.estado}, ${pf?.endereco.cep} ");
-      }
+      imprimiEmpresa(element, empresas);
     }
   } else {
     print('Sem empresas cadastradas!');
+  }
+}
+
+void imprimiEmpresa(Empresa element, RepositoryEmpresas rEmpresas) {
+  print('\n');
+  print("ID: ${element.id}");
+  print("CNPJ: ${element.cnpj} Data Cadastro: ${element.dataCadastro}");
+  print("Razão Social: ${element.nomeSocial}");
+  print("Nome Fantasia: ${element.nomeFantasia}");
+  print("Telefone:: ${element.id}");
+  print(
+      "Endereço:: ${element.endereco.logradouro}, ${element.endereco.numero}, ${element.endereco.bairro}, ${element.endereco.municipio}/${element.endereco.estado}, ${element.endereco.cep} ");
+  print("Sócio: ");
+  if (element.socioIdPJ != null) {
+    // buscar pj e imprimir
+    PessoaJuridica? pj = rEmpresas.getSocioPJId(element.socioIdPJ!);
+    print("CNPJ: ${pj?.cnpj}");
+    print("Razão Social: ${pj?.razaoSocial}");
+    print("Nome Fantasia:  ${pj?.nomeFantasia}");
+    print(
+        "Endereço:: ${pj?.endereco.logradouro}, ${pj?.endereco.numero}, ${pj?.endereco.bairro}, ${pj?.endereco.municipio}/${pj?.endereco.estado}, ${pj?.endereco.cep} ");
+  }
+  if (element.socioIdPF != null) {
+    PessoaFisica? pf = rEmpresas.getSocioPFId(element.socioIdPF!);
+    print("CPF: ${pf?.cpf}");
+    print("Nome completo: ${pf?.nome}");
+
+    print(
+        "Endereço:: ${pf?.endereco.logradouro}, ${pf?.endereco.numero}, ${pf?.endereco.bairro}, ${pf?.endereco.municipio}/${pf?.endereco.estado}, ${pf?.endereco.cep} ");
   }
 }
