@@ -6,6 +6,7 @@ import 'package:registre_empresa/model/pessoa_fisica.dart';
 import 'package:registre_empresa/model/pessoa_juridica.dart';
 import 'package:registre_empresa/model/socio.dart';
 import 'package:registre_empresa/repository/repository_empresas.dart';
+import 'package:registre_empresa/validar.dart';
 
 void main(List<String> arguments) {
   RepositoryEmpresas empresas = RepositoryEmpresas();
@@ -14,7 +15,7 @@ void main(List<String> arguments) {
   do {
     int opcao = 7;
     print('\n');
-    print('SGE - Sistema de Gerenciamento de Empresas');
+    print('SGE - SISTEMA DE GERENCIAMENTO DE EMPRESA');
     print('Opções:');
     print('1. Cadastrar uma nova empresa');
     print('2. Buscar Empresa cadastrada por CNPJ');
@@ -23,6 +24,7 @@ void main(List<String> arguments) {
         '4. Listar Empresas cadastradas em ordem alfabética (baseado na Razão Social)');
     print('5. Excluir uma empresa (por ID)');
     print('0. Sair');
+    stdout.write('Opção: ');
     opcao = int.parse(stdin.readLineSync()!);
 
     switch (opcao) {
@@ -33,6 +35,7 @@ void main(List<String> arguments) {
         buscarEmpresaPorCNPJ(empresas);
         break;
       case 3:
+        buscarEmpresaPorCNPJouCPFSocio(empresas);
         break;
       case 4:
         imprimirEmpresas(empresas);
@@ -45,6 +48,47 @@ void main(List<String> arguments) {
       default:
     }
   } while (verdade);
+}
+
+void buscarEmpresaPorCNPJouCPFSocio(RepositoryEmpresas empresas) {
+  print('Buscar empresa');
+  print('1. CPF do sócio');
+  print('2. CNPJ do sócio');
+  int opcao = int.parse(stdin.readLineSync()!);
+  String cpfOuCnpjSocio;
+  bool cpfOuCnpjValidado = false;
+
+  switch (opcao) {
+    case 1:
+      do {
+        stdout.write("CPF do Sócio: ");
+        //validar: quantidade de números, antes de criar empresa
+        cpfOuCnpjSocio = stdin.readLineSync()!;
+        cpfOuCnpjValidado = eCpf(cpfOuCnpjSocio);
+      } while (!cpfOuCnpjValidado);
+      Empresa? ep = empresas.getEmpresaCPFSocio(cpfOuCnpjSocio);
+      if (ep != null) {
+        imprimiEmpresa(ep, empresas);
+      } else {
+        print('CPF não existe!');
+      }
+      break;
+    case 2:
+      do {
+        stdout.write("CNPJ do Sócio: ");
+        //validar: quantidade de números antes de criar empresa
+        cpfOuCnpjSocio = stdin.readLineSync()!;
+        cpfOuCnpjValidado = eCnpj(cpfOuCnpjSocio);
+      } while (!cpfOuCnpjValidado);
+      Empresa? ep = empresas.getEmpresaCNPJSocio(cpfOuCnpjSocio);
+      if (ep != null) {
+        imprimiEmpresa(ep, empresas);
+      } else {
+        print('CNPJ não existe!');
+      }
+      break;
+    default:
+  }
 }
 
 void buscarEmpresaPorCNPJ(RepositoryEmpresas empresas) {
@@ -61,16 +105,21 @@ void buscarEmpresaPorCNPJ(RepositoryEmpresas empresas) {
 }
 
 void cadastrarEmpresa(RepositoryEmpresas empresas) {
-  print("Informações da empresa");
+  print("CADASTRAR EMPRESA");
   stdout.write("Razao Social: ");
   String nomeSocialEmpresa = stdin.readLineSync()!;
   stdout.write("Nome Fantasia: ");
   String nomeFantasiaEmpresa = stdin.readLineSync()!;
   stdout.write("Telefone: ");
   String telefoneEmpresa = stdin.readLineSync()!;
-  stdout.write(
-      "CNPJ(apenas número): "); //validar: quantidade de números, antes de criar empresa
-  String cnpjEmpresa = stdin.readLineSync()!;
+  String cnpjEmpresa;
+  bool cnpjValidado = false;
+  do {
+    stdout.write("CNPJ(apenas número): ");
+    //validar: quantidade de números, antes de criar empresa
+    cnpjEmpresa = stdin.readLineSync()!;
+    cnpjValidado = eCnpj(cnpjEmpresa);
+  } while (!cnpjValidado);
 
   Endereco enderecoEmpresa = cadastrarEndereco();
   Socio? socio = cadastraSocio(empresas);
@@ -84,14 +133,14 @@ void cadastrarEmpresa(RepositoryEmpresas empresas) {
       Empresa empresa = Empresa(nomeSocialEmpresa, nomeFantasiaEmpresa,
           telefoneEmpresa, enderecoEmpresa,
           socioIdPJ: socio.id);
-      empresa.validarCNPJ(cnpjEmpresa);
+      empresa.inserirCNPJ = cnpjEmpresa;
       empresas.cadastrarEmpresa(empresa);
       print('Empresa cadastrada!\n');
     } else {
       Empresa empresa = Empresa(nomeSocialEmpresa, nomeFantasiaEmpresa,
           telefoneEmpresa, enderecoEmpresa,
           socioIdPF: socio.id);
-      empresa.validarCNPJ(cnpjEmpresa);
+      empresa.inserirCNPJ = cnpjEmpresa;
       empresas.cadastrarEmpresa(empresa);
       print('Empresa cadastrada!\n');
     }
@@ -99,7 +148,7 @@ void cadastrarEmpresa(RepositoryEmpresas empresas) {
 }
 
 Socio? cadastraSocio(RepositoryEmpresas empresas) {
-  print('Cadastrar Sócio');
+  print('CADASTRAR SÓCIO');
   print('Tipo de sócio:');
   print('1. Pessoal Física');
   print('2. Pessoa Jurídica');
@@ -108,8 +157,8 @@ Socio? cadastraSocio(RepositoryEmpresas empresas) {
 
 // se 1 pessoa física se 2 pessoa juridica
   if (optionSocio == 1) {
-    print("Sócio Pessoa Física da ");
-    stdout.write("Nome completo do sócio: ");
+    print("Sócio Pessoa Física");
+    stdout.write("Nome completo: ");
     String nomeSocio = stdin.readLineSync()!;
     stdout.write('CPF: ');
     String cpfSocio = stdin.readLineSync()!;
@@ -128,14 +177,20 @@ Socio? cadastraSocio(RepositoryEmpresas empresas) {
     String razaoSocialSocio = stdin.readLineSync()!;
     stdout.write('Nome Fantasia: ');
     String nomeFantasiaSocio = stdin.readLineSync()!;
-    stdout.write('CNPJ: ');
-    String cnpjSocio = stdin.readLineSync()!;
+    String cnpjEmpresa;
+    bool cnpjValidado = false;
+    do {
+      stdout.write("CNPJ(apenas número): ");
+      cnpjEmpresa = stdin.readLineSync()!;
+      cnpjValidado = eCnpj(
+          cnpjEmpresa); //valida: quantidade de números, antes de criar empresa
 
+    } while (!cnpjValidado);
     Endereco enderecopj = cadastrarEndereco();
 
     PessoaJuridica socioPJ =
         PessoaJuridica(razaoSocialSocio, nomeFantasiaSocio, enderecopj);
-    socioPJ.validarCNPJ(cnpjSocio); // só avança se o CNPJ estiver validado
+    socioPJ.validarCNPJ(cnpjEmpresa);
     empresas.cadastrarSocioPJ(socioPJ);
 
     return socioPJ;
@@ -145,7 +200,7 @@ Socio? cadastraSocio(RepositoryEmpresas empresas) {
 }
 
 Endereco cadastrarEndereco() {
-  print("Cadastrar endereço do Socio");
+  print("cadastrar endereço");
   stdout.write('Estado: ');
   String estado = stdin.readLineSync()!;
   stdout.write('Cidade: ');
@@ -154,7 +209,7 @@ Endereco cadastrarEndereco() {
   String bairro = stdin.readLineSync()!;
   stdout.write('Logradouro: ');
   String logradouro = stdin.readLineSync()!;
-  stdout.write('Número');
+  stdout.write('Número: ');
   String numero = stdin.readLineSync()!;
   stdout.write('Complemento: ');
   String commplemento = stdin.readLineSync()!;
