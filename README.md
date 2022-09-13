@@ -8,23 +8,23 @@ Uma Pessoa Física tem os seguintes dados: Nome, CPF e Endereço (Logradouro, N�
 Uma Pessoa Jurídica tem os seguintes dados: Razão Social, Nome Fantasia, CNPJ, Endereço (Logradouro, Número, Complemento, Bairro, Estado e CEP).
 O sistema ao ser executado deve oferecer as seguintes opções:
 
-Cadastrar uma nova empresa;
-Buscar Empresa cadastrada por CNPJ;
-Buscar Empresa por CPF/CNPJ do Sócio;
-Listar Empresas cadastradas em ordem alfabética (baseado na Razão Social);
-Excluir uma empresa (por ID);
-Sair.
+Ok - Cadastrar uma nova empresa;
+Ok - Buscar Empresa cadastrada por CNPJ;
+Ok - Buscar Empresa por CPF/CNPJ do Sócio;
+Ok - Listar Empresas cadastradas em ordem alfabética (baseado na Razão Social);
+Ok - Excluir uma empresa (por ID);
+Ok - Sair.
 Requisitos:
 
-Toda pessoa seja física ou jurídica, devem saber validar seu documento (CPF/CNPJ);
-O programa deve ser criado considerando os recursos disponíveis da Orientação à Objetos e boas práticas;
-O programa deve ter no mínimo uma herança;
-CPF e CNPJ são do tipo String, mas o input do usuário será apenas números;
-Telefone é do tipo String, mas o input do usuário será apenas números, ex.: 81987654321;
-CEP é do tipo String, mas o input do usuário será apenas números;
-O ID deve ser único, para cada Empresa cadastrada;
-O horário de cadastro deve ser obtido automaticamente pelo sistema;
-A impressão do conteúdo de uma empresa deve atender no mínimo a seguinte formatação:
+Ok - Toda pessoa seja física ou jurídica, devem saber validar seu documento (CPF/CNPJ);
+OK - O programa deve ser criado considerando os recursos disponíveis da Orientação à Objetos e boas práticas;
+OK - O programa deve ter no mínimo uma herança;
+OK - CPF e CNPJ são do tipo String, mas o input do usuário será apenas números;
+- Telefone é do tipo String, mas o input do usuário será apenas números, ex.: 81987654321;
+- CEP é do tipo String, mas o input do usuário será apenas números;
+OK - O ID deve ser único, para cada Empresa cadastrada;
+OK - O horário de cadastro deve ser obtido automaticamente pelo sistema;
+OK - A impressão do conteúdo de uma empresa deve atender no mínimo a seguinte formatação:
 ID: ca3e6c78-dae6-4629-b819-e5576c00f68b
 CNPJ: 11.941.838/0001-04 Data Cadastro: 2022-08-31 22:37:17.921952
 Razão Social: Elisa e Flávia Pães e Doces ME
