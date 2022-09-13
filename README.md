@@ -14,11 +14,12 @@ O sistema ao ser executado deve oferecer as seguintes opções:
 4. Ok - Listar Empresas cadastradas em ordem alfabética (baseado na Razão Social);
 5. Ok - Excluir uma empresa (por ID);
 6. Ok - Sair.
+
 Requisitos:
 
-Ok - Toda pessoa seja física ou jurídica, devem saber validar seu documento (CPF/CNPJ);
-OK - O programa deve ser criado considerando os recursos disponíveis da Orientação à Objetos e boas práticas;
-OK - O programa deve ter no mínimo uma herança;
+a) Ok - Toda pessoa seja física ou jurídica, devem saber validar seu documento (CPF/CNPJ);
+b) OK - O programa deve ser criado considerando os recursos disponíveis da Orientação à Objetos e boas práticas;
+c) OK - O programa deve ter no mínimo uma herança;
 OK - CPF e CNPJ são do tipo String, mas o input do usuário será apenas números;
 - Telefone é do tipo String, mas o input do usuário será apenas números, ex.: 81987654321;
 - CEP é do tipo String, mas o input do usuário será apenas números;
