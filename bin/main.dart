@@ -15,7 +15,7 @@ void main(List<String> arguments) {
   do {
     int opcao = 7;
     print('\n');
-    print('SGE - SISTEMA DE GERENCIAMENTO DE EMPRESA');
+    print('SGE - SISTEMA DE GERENCIAMENTO DE EMPRESAS');
     print('Opções:');
     print('1. Cadastrar uma nova empresa');
     print('2. Buscar Empresa cadastrada por CNPJ');
@@ -76,7 +76,7 @@ void buscarEmpresaPorCNPJouCPFSocio(RepositoryEmpresas empresas) {
         stdout.write("CPF do Sócio: ");
         //validar: quantidade de números, antes de criar empresa
         cpfOuCnpjSocio = stdin.readLineSync()!;
-        cpfOuCnpjValidado = eCpf(cpfOuCnpjSocio);
+        cpfOuCnpjValidado = eCpfOuTelefone(cpfOuCnpjSocio);
       } while (!cpfOuCnpjValidado);
       Empresa? ep = empresas.getEmpresaCPFSocio(cpfOuCnpjSocio);
       if (ep != null) {
@@ -122,13 +122,19 @@ void cadastrarEmpresa(RepositoryEmpresas empresas) {
   String nomeSocialEmpresa = stdin.readLineSync()!;
   stdout.write("Nome Fantasia: ");
   String nomeFantasiaEmpresa = stdin.readLineSync()!;
-  stdout.write("Telefone: "); // tem que validar
-  String telefoneEmpresa = stdin.readLineSync()!;
+
+  String telefoneEmpresa;
+  bool telefoneValidado = false;
+  do {
+    stdout.write("Telefone(DDD+número): ");
+    telefoneEmpresa = stdin.readLineSync()!;
+    telefoneValidado = eCpfOuTelefone(telefoneEmpresa);
+  } while (!telefoneValidado);
+
   String cnpjEmpresa;
   bool cnpjValidado = false;
   do {
     stdout.write("CNPJ(apenas número): ");
-    //validar: quantidade de números, antes de criar empresa
     cnpjEmpresa = stdin.readLineSync()!;
     cnpjValidado = eCnpj(cnpjEmpresa);
   } while (!cnpjValidado);
@@ -179,7 +185,7 @@ Socio? cadastraSocio(RepositoryEmpresas empresas) {
       stdout.write("CPF do Sócio: ");
       cpfOuCnpjSocio = stdin.readLineSync()!;
       //valida: quantidade de números, antes de criar empresa
-      cpfOuCnpjValidado = eCpf(cpfOuCnpjSocio);
+      cpfOuCnpjValidado = eCpfOuTelefone(cpfOuCnpjSocio);
     } while (!cpfOuCnpjValidado);
     Endereco enderecoPf = cadastrarEndereco();
 

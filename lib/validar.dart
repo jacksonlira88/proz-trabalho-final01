@@ -61,7 +61,7 @@ bool eCnpj(String cnpj) {
   }
 }
 
-bool eCpf(String cpf) {
+bool eCpfOuTelefone(String cpf) {
   if (cpf == "00000000000" ||
       cpf == "22222222222" ||
       cpf == "11111111111" ||

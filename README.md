@@ -11,7 +11,7 @@ O sistema ao ser executado deve oferecer as seguintes opções:
 1. Ok - Cadastrar uma nova empresa;
 2. Ok - Buscar Empresa cadastrada por CNPJ;
 3. Ok - Buscar Empresa por CPF/CNPJ do Sócio;
-4. Ok - Listar Empresas cadastradas em ordem alfabética (baseado na Razão Social);
+4.  - Listar Empresas cadastradas em ordem alfabética (baseado na Razão Social);
 5. Ok - Excluir uma empresa (por ID);
 6. Ok - Sair.
 
