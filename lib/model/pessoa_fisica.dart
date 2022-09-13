@@ -6,9 +6,8 @@ class PessoaFisica extends Socio {
 
   PessoaFisica(this.nome, super.endereco);
 
-  bool validarCPF(String cpf) {
+  set inserirrCPF(String cpf) {
     _cpf = cpf;
-    return true;
   }
 
   get cpf {

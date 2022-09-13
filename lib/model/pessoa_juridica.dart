@@ -7,9 +7,8 @@ class PessoaJuridica extends Socio {
 
   PessoaJuridica(this.razaoSocial, this.nomeFantasia, super.endereco);
 
-  bool validarCNPJ(String cnpj) {
+  set validarCNPJ(String cnpj) {
     _cnpj = cnpj;
-    return true;
   }
 
   get cnpj {
