@@ -49,7 +49,7 @@ class RepositoryEmpresas {
     return _apiProvider.getEmpresaCNPJSocio(cnpj);
   }
 
-  String getEmpresaCPFSocio(String cpf) {
-    return 'Empresa';
+  Empresa? getEmpresaCPFSocio(String cpf) {
+    return _apiProvider.getEmpresaCPFSocio(cpf);
   }
 }
