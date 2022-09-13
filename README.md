@@ -17,15 +17,15 @@ O sistema ao ser executado deve oferecer as seguintes opções:
 
 Requisitos:
 
-a) Ok - Toda pessoa seja física ou jurídica, devem saber validar seu documento (CPF/CNPJ);
-b) OK - O programa deve ser criado considerando os recursos disponíveis da Orientação à Objetos e boas práticas;
-c) OK - O programa deve ter no mínimo uma herança;
-OK - CPF e CNPJ são do tipo String, mas o input do usuário será apenas números;
+- (OK) Toda pessoa seja física ou jurídica, devem saber validar seu documento (CPF/CNPJ);
+- (OK) O programa deve ser criado considerando os recursos disponíveis da Orientação à Objetos e boas práticas;
+- (OK) O programa deve ter no mínimo uma herança;
+- (OK) CPF e CNPJ são do tipo String, mas o input do usuário será apenas números;
 - Telefone é do tipo String, mas o input do usuário será apenas números, ex.: 81987654321;
 - CEP é do tipo String, mas o input do usuário será apenas números;
-OK - O ID deve ser único, para cada Empresa cadastrada;
-OK - O horário de cadastro deve ser obtido automaticamente pelo sistema;
-OK - A impressão do conteúdo de uma empresa deve atender no mínimo a seguinte formatação:
+- (OK) O ID deve ser único, para cada Empresa cadastrada;
+- (OK) O horário de cadastro deve ser obtido automaticamente pelo sistema;
+- (OK) A impressão do conteúdo de uma empresa deve atender no mínimo a seguinte formatação:
 ID: ca3e6c78-dae6-4629-b819-e5576c00f68b
 CNPJ: 11.941.838/0001-04 Data Cadastro: 2022-08-31 22:37:17.921952
 Razão Social: Elisa e Flávia Pães e Doces ME
