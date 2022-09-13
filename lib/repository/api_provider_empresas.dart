@@ -47,21 +47,26 @@ class APIProviderEmpresas {
 
 // metodos para empresa
   Empresa? getEmpresaCPFSocio(String cpfSocio) {
-    for (var element in _empresasCadastradas) {
-      if (element.cnpj == cpfSocio) {
-        return element;
+    for (var socio in _sociosPF) {
+      if (socio.cpf == cpfSocio) {
+        for (var element in _empresasCadastradas) {
+          if (element.socioIdPF == socio.id) {
+            return element;
+          }
+        }
       }
     }
     return null;
   }
 
-// se empresa não tiver sócio com esse cnpj retorna null
+// se empresa não tiver sócio com esse cnpj retorna null, não testado, TESTAR a noite
+//O que fazer com o retorno null
   Empresa? getEmpresaCNPJSocio(String cnpjSocio) {
     for (var socio in _sociosPJ) {
-      for (var empresa in _empresasCadastradas) {
-        if (socio.cnpj == cnpjSocio) {
-          if (empresa.id == socio.id) {
-            return empresa;
+      if (socio.cnpj == cnpjSocio) {
+        for (var element in _empresasCadastradas) {
+          if (element.socioIdPJ == socio.id) {
+            return element;
           }
         }
       }
