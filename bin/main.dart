@@ -110,7 +110,7 @@ void cadastrarEmpresa(RepositoryEmpresas empresas) {
   String nomeSocialEmpresa = stdin.readLineSync()!;
   stdout.write("Nome Fantasia: ");
   String nomeFantasiaEmpresa = stdin.readLineSync()!;
-  stdout.write("Telefone: ");
+  stdout.write("Telefone: "); // tem que validar
   String telefoneEmpresa = stdin.readLineSync()!;
   String cnpjEmpresa;
   bool cnpjValidado = false;
@@ -154,19 +154,26 @@ Socio? cadastraSocio(RepositoryEmpresas empresas) {
   print('2. Pessoa Jurídica');
   stdout.write('Opção: ');
   int optionSocio = int.parse(stdin.readLineSync()!);
+  String cpfOuCnpjSocio;
+  bool cpfOuCnpjValidado = false;
 
-// se 1 pessoa física se 2 pessoa juridica
+// 1 pessoa física, 2 pessoa juridica
   if (optionSocio == 1) {
     print("Sócio Pessoa Física");
     stdout.write("Nome completo: ");
     String nomeSocio = stdin.readLineSync()!;
-    stdout.write('CPF: ');
-    String cpfSocio = stdin.readLineSync()!;
 
+    do {
+      stdout.write("CNPJ(apenas número): ");
+      cpfOuCnpjSocio = stdin.readLineSync()!;
+      //valida: quantidade de números, antes de criar empresa
+      cpfOuCnpjValidado = eCpf(cpfOuCnpjSocio);
+    } while (!cpfOuCnpjValidado);
     Endereco enderecoPf = cadastrarEndereco();
 
     PessoaFisica sociopf = PessoaFisica(nomeSocio, enderecoPf);
-    sociopf.validarCPF(cpfSocio); // só avança se o CNPJ estiver validado
+    sociopf.inserirrCPF =
+        cpfOuCnpjSocio; // só avança se o CNPJ estiver validado
     empresas.cadastrarSocioPF(sociopf);
 
     return sociopf;
@@ -177,20 +184,19 @@ Socio? cadastraSocio(RepositoryEmpresas empresas) {
     String razaoSocialSocio = stdin.readLineSync()!;
     stdout.write('Nome Fantasia: ');
     String nomeFantasiaSocio = stdin.readLineSync()!;
-    String cnpjEmpresa;
-    bool cnpjValidado = false;
+
     do {
       stdout.write("CNPJ(apenas número): ");
-      cnpjEmpresa = stdin.readLineSync()!;
-      cnpjValidado = eCnpj(
-          cnpjEmpresa); //valida: quantidade de números, antes de criar empresa
+      cpfOuCnpjSocio = stdin.readLineSync()!;
+      cpfOuCnpjValidado = eCnpj(
+          cpfOuCnpjSocio); //valida: quantidade de números, antes de criar empresa
 
-    } while (!cnpjValidado);
+    } while (!cpfOuCnpjValidado);
     Endereco enderecopj = cadastrarEndereco();
 
     PessoaJuridica socioPJ =
         PessoaJuridica(razaoSocialSocio, nomeFantasiaSocio, enderecopj);
-    socioPJ.validarCNPJ(cnpjEmpresa);
+    socioPJ.inserirCNPJ = cpfOuCnpjSocio;
     empresas.cadastrarSocioPJ(socioPJ);
 
     return socioPJ;
