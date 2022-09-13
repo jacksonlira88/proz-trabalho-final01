@@ -18,7 +18,7 @@ class Empresa {
     dataCadastro = dataAtual();
   }
 
-  validarCNPJ(String cnpj) {
+  set inserirCNPJ(String cnpj) {
     _cnpj = cnpj;
   }
 
