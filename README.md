@@ -8,12 +8,12 @@ Uma Pessoa Física tem os seguintes dados: Nome, CPF e Endereço (Logradouro, N�
 Uma Pessoa Jurídica tem os seguintes dados: Razão Social, Nome Fantasia, CNPJ, Endereço (Logradouro, Número, Complemento, Bairro, Estado e CEP).
 O sistema ao ser executado deve oferecer as seguintes opções:
 
-Ok - Cadastrar uma nova empresa;
-Ok - Buscar Empresa cadastrada por CNPJ;
-Ok - Buscar Empresa por CPF/CNPJ do Sócio;
-Ok - Listar Empresas cadastradas em ordem alfabética (baseado na Razão Social);
-Ok - Excluir uma empresa (por ID);
-Ok - Sair.
+1. Ok - Cadastrar uma nova empresa;
+2. Ok - Buscar Empresa cadastrada por CNPJ;
+3. Ok - Buscar Empresa por CPF/CNPJ do Sócio;
+4. Ok - Listar Empresas cadastradas em ordem alfabética (baseado na Razão Social);
+5. Ok - Excluir uma empresa (por ID);
+6. Ok - Sair.
 Requisitos:
 
 Ok - Toda pessoa seja física ou jurídica, devem saber validar seu documento (CPF/CNPJ);
