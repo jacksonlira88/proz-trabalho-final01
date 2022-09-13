@@ -89,12 +89,12 @@ class APIProviderEmpresas {
         return false;
       } else {
         for (var element in _empresasCadastradas) {
-          element.id = id;
-          bool result = _empresasCadastradas.remove(element);
-          if (result) {
-            return true;
+          if (element.id == id) {
+            bool result = _empresasCadastradas.remove(element);
+            if (result) {
+              return true;
+            }
           }
-          return false;
         }
       }
     }

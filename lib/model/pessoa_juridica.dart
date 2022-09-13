@@ -7,7 +7,7 @@ class PessoaJuridica extends Socio {
 
   PessoaJuridica(this.razaoSocial, this.nomeFantasia, super.endereco);
 
-  set validarCNPJ(String cnpj) {
+  set inserirCNPJ(String cnpj) {
     _cnpj = cnpj;
   }
 

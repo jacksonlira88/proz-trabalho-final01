@@ -41,6 +41,7 @@ void main(List<String> arguments) {
         imprimirEmpresas(empresas);
         break;
       case 5:
+        deletarEmpresa(empresas);
         break;
       case 0:
         verdade = false;
@@ -48,6 +49,17 @@ void main(List<String> arguments) {
       default:
     }
   } while (verdade);
+}
+
+void deletarEmpresa(RepositoryEmpresas empresas) {
+  bool opcao = true;
+  do {
+    print("Excluir empresa cadastrada");
+    stdout.write("Informe o id: ");
+    String id = stdin.readLineSync()!;
+    opcao = empresas.removerEmpresa(id);
+  } while (!opcao);
+  print('Empresa exluida com sucesso!');
 }
 
 void buscarEmpresaPorCNPJouCPFSocio(RepositoryEmpresas empresas) {
@@ -164,7 +176,7 @@ Socio? cadastraSocio(RepositoryEmpresas empresas) {
     String nomeSocio = stdin.readLineSync()!;
 
     do {
-      stdout.write("CNPJ(apenas número): ");
+      stdout.write("CPF do Sócio: ");
       cpfOuCnpjSocio = stdin.readLineSync()!;
       //valida: quantidade de números, antes de criar empresa
       cpfOuCnpjValidado = eCpf(cpfOuCnpjSocio);
@@ -249,7 +261,7 @@ void imprimiEmpresa(Empresa element, RepositoryEmpresas rEmpresas) {
   if (element.socioIdPJ != null) {
     // buscar pj e imprimir
     PessoaJuridica? pj = rEmpresas.getSocioPJId(element.socioIdPJ!);
-    print("CNPJ: ${pj?.cnpj}");
+    print("CNPJ: ${formatoCNPJ(pj?.cnpj)}");
     print("Razão Social: ${pj?.razaoSocial}");
     print("Nome Fantasia:  ${pj?.nomeFantasia}");
     print(
