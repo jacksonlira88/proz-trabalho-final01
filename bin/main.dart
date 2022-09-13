@@ -232,7 +232,8 @@ void imprimirEmpresas(RepositoryEmpresas empresas) {
 void imprimiEmpresa(Empresa element, RepositoryEmpresas rEmpresas) {
   print('\n');
   print("ID: ${element.id}");
-  print("CNPJ: ${element.cnpj} Data Cadastro: ${element.dataCadastro}");
+  print(
+      "CNPJ: ${formatoCNPJ(element.cnpj)} Data Cadastro: ${element.dataCadastro}");
   print("Razão Social: ${element.nomeSocial}");
   print("Nome Fantasia: ${element.nomeFantasia}");
   print("Telefone:: ${element.id}");
@@ -250,7 +251,7 @@ void imprimiEmpresa(Empresa element, RepositoryEmpresas rEmpresas) {
   }
   if (element.socioIdPF != null) {
     PessoaFisica? pf = rEmpresas.getSocioPFId(element.socioIdPF!);
-    print("CPF: ${pf?.cpf}");
+    print("CPF: ${formatoCPF(pf?.cpf)}");
     print("Nome completo: ${pf?.nome}");
 
     print(
