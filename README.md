@@ -21,8 +21,8 @@ Requisitos:
 - (OK) O programa deve ser criado considerando os recursos disponíveis da Orientação à Objetos e boas práticas;
 - (OK) O programa deve ter no mínimo uma herança;
 - (OK) CPF e CNPJ são do tipo String, mas o input do usuário será apenas números;
-- Telefone é do tipo String, mas o input do usuário será apenas números, ex.: 81987654321;
-- CEP é do tipo String, mas o input do usuário será apenas números;
+- (Ok) Telefone é do tipo String, mas o input do usuário será apenas números, ex.: 81987654321;
+- (OK) CEP é do tipo String, mas o input do usuário será apenas números;
 - (OK) O ID deve ser único, para cada Empresa cadastrada;
 - (OK) O horário de cadastro deve ser obtido automaticamente pelo sistema;
 - (OK) A impressão do conteúdo de uma empresa deve atender no mínimo a seguinte formatação:
