@@ -59,7 +59,7 @@ void deletarEmpresa(RepositoryEmpresas empresas) {
     String id = stdin.readLineSync()!;
     opcao = empresas.removerEmpresa(id);
   } while (!opcao);
-  print('Empresa exluida com sucesso!');
+  print('Empresa excluída com sucesso!');
 }
 
 void buscarEmpresaPorCNPJouCPFSocio(RepositoryEmpresas empresas) {
@@ -76,7 +76,7 @@ void buscarEmpresaPorCNPJouCPFSocio(RepositoryEmpresas empresas) {
         stdout.write("CPF do Sócio: ");
         //validar: quantidade de números, antes de criar empresa
         cpfOuCnpjSocio = stdin.readLineSync()!;
-        cpfOuCnpjValidado = eCpfOuTelefone(cpfOuCnpjSocio);
+        cpfOuCnpjValidado = Validar.eCpfOuTelefone(cpfOuCnpjSocio);
       } while (!cpfOuCnpjValidado);
       Empresa? ep = empresas.getEmpresaCPFSocio(cpfOuCnpjSocio);
       if (ep != null) {
@@ -90,7 +90,7 @@ void buscarEmpresaPorCNPJouCPFSocio(RepositoryEmpresas empresas) {
         stdout.write("CNPJ do Sócio: ");
         //validar: quantidade de números antes de criar empresa
         cpfOuCnpjSocio = stdin.readLineSync()!;
-        cpfOuCnpjValidado = eCnpj(cpfOuCnpjSocio);
+        cpfOuCnpjValidado = Validar.eCnpj(cpfOuCnpjSocio);
       } while (!cpfOuCnpjValidado);
       Empresa? ep = empresas.getEmpresaCNPJSocio(cpfOuCnpjSocio);
       if (ep != null) {
@@ -128,7 +128,7 @@ void cadastrarEmpresa(RepositoryEmpresas empresas) {
   do {
     stdout.write("Telefone(DDD+número): ");
     telefoneEmpresa = stdin.readLineSync()!;
-    telefoneValidado = eCpfOuTelefone(telefoneEmpresa);
+    telefoneValidado = Validar.eCpfOuTelefone(telefoneEmpresa);
   } while (!telefoneValidado);
 
   String cnpjEmpresa;
@@ -136,7 +136,7 @@ void cadastrarEmpresa(RepositoryEmpresas empresas) {
   do {
     stdout.write("CNPJ(apenas número): ");
     cnpjEmpresa = stdin.readLineSync()!;
-    cnpjValidado = eCnpj(cnpjEmpresa);
+    cnpjValidado = Validar.eCnpj(cnpjEmpresa);
   } while (!cnpjValidado);
 
   Endereco enderecoEmpresa = cadastrarEndereco();
@@ -185,7 +185,7 @@ Socio? cadastraSocio(RepositoryEmpresas empresas) {
       stdout.write("CPF do Sócio: ");
       cpfOuCnpjSocio = stdin.readLineSync()!;
       //valida: quantidade de números, antes de criar empresa
-      cpfOuCnpjValidado = eCpfOuTelefone(cpfOuCnpjSocio);
+      cpfOuCnpjValidado = Validar.eCpfOuTelefone(cpfOuCnpjSocio);
     } while (!cpfOuCnpjValidado);
     Endereco enderecoPf = cadastrarEndereco();
 
@@ -206,7 +206,7 @@ Socio? cadastraSocio(RepositoryEmpresas empresas) {
     do {
       stdout.write("CNPJ(apenas número): ");
       cpfOuCnpjSocio = stdin.readLineSync()!;
-      cpfOuCnpjValidado = eCnpj(
+      cpfOuCnpjValidado = Validar.eCnpj(
           cpfOuCnpjSocio); //valida: quantidade de números, antes de criar empresa
 
     } while (!cpfOuCnpjValidado);
@@ -225,6 +225,15 @@ Socio? cadastraSocio(RepositoryEmpresas empresas) {
 
 Endereco cadastrarEndereco() {
   print("cadastrar endereço");
+
+  String cep;
+  bool cepValidado = false;
+  do {
+    stdout.write('CEP: ');
+    cep = stdin.readLineSync()!;
+    cepValidado = Validar.eCepValido(cep);
+  } while (!cepValidado);
+
   stdout.write('Estado: ');
   String estado = stdin.readLineSync()!;
   stdout.write('Cidade: ');
@@ -240,6 +249,7 @@ Endereco cadastrarEndereco() {
 
   Endereco endereco = Endereco(estado, municipio, bairro, logradouro,
       numero: numero, complemento: commplemento);
+  endereco.adicionarCEP = cep;
   return endereco;
 }
 
@@ -257,17 +267,17 @@ void imprimiEmpresa(Empresa element, RepositoryEmpresas rEmpresas) {
   print('\n');
   print("ID: ${element.id}");
   print(
-      "CNPJ: ${formatoCNPJ(element.cnpj)} Data Cadastro: ${element.dataCadastro}");
+      "CNPJ: ${Validar.formatoCNPJ(element.cnpj)} Data Cadastro: ${element.dataCadastro}");
   print("Razão Social: ${element.nomeSocial}");
   print("Nome Fantasia: ${element.nomeFantasia}");
-  print("Telefone:: ${element.id}");
+  print("Telefone:: ${Validar.formatoTelefone(element.telefone)}");
   print(
-      "Endereço:: ${element.endereco.logradouro}, ${element.endereco.numero}, ${element.endereco.bairro}, ${element.endereco.municipio}/${element.endereco.estado}, ${element.endereco.cep} ");
+      "Endereço:: ${element.endereco.logradouro}, ${element.endereco.numero}, ${element.endereco.bairro}, ${element.endereco.municipio}/${element.endereco.estado}, ${Validar.formatoCEP(element.endereco.cep ?? '')} ");
   print("Sócio: ");
   if (element.socioIdPJ != null) {
     // buscar pj e imprimir
     PessoaJuridica? pj = rEmpresas.getSocioPJId(element.socioIdPJ!);
-    print("CNPJ: ${formatoCNPJ(pj?.cnpj)}");
+    print("CNPJ: ${Validar.formatoCNPJ(pj?.cnpj)}");
     print("Razão Social: ${pj?.razaoSocial}");
     print("Nome Fantasia:  ${pj?.nomeFantasia}");
     print(
@@ -275,7 +285,7 @@ void imprimiEmpresa(Empresa element, RepositoryEmpresas rEmpresas) {
   }
   if (element.socioIdPF != null) {
     PessoaFisica? pf = rEmpresas.getSocioPFId(element.socioIdPF!);
-    print("CPF: ${formatoCPF(pf?.cpf)}");
+    print("CPF: ${Validar.formatoCPF(pf?.cpf)}");
     print("Nome completo: ${pf?.nome}");
 
     print(
