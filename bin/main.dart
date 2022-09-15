@@ -255,7 +255,11 @@ Endereco cadastrarEndereco() {
 
 void imprimirEmpresas(RepositoryEmpresas empresas) {
   if (empresas.listaEmpresas().isNotEmpty) {
-    for (var element in empresas.listaEmpresas()) {
+    List<Empresa> lisaEmpresaOrdenada = empresas.listaEmpresas();
+    //ordena antes em ordem alfabetica antes de imprimir
+    lisaEmpresaOrdenada.sort(((a, b) =>
+        a.razaoSocial.toLowerCase().compareTo(b.razaoSocial.toLowerCase())));
+    for (var element in lisaEmpresaOrdenada) {
       imprimiEmpresa(element, empresas);
     }
   } else {
@@ -268,7 +272,7 @@ void imprimiEmpresa(Empresa element, RepositoryEmpresas rEmpresas) {
   print("ID: ${element.id}");
   print(
       "CNPJ: ${Validar.formatoCNPJ(element.cnpj)} Data Cadastro: ${element.dataCadastro}");
-  print("Razão Social: ${element.nomeSocial}");
+  print("Razão Social: ${element.razaoSocial}");
   print("Nome Fantasia: ${element.nomeFantasia}");
   print("Telefone:: ${Validar.formatoTelefone(element.telefone)}");
   print(
